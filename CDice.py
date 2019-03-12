@@ -40,16 +40,6 @@ class Application(Frame):
         self.output = Label(root, text="")
         self.output.grid()
 
-    def cupholder(self):
-        global CDtrayOpen
-        if CDtrayOpen == False:
-            ctypes.windll.WINMM.mciSendStringW(
-                u"set cdaudio door open", None, 0, None)
-            CDtrayOpen = True
-        else:
-            ctypes.windll.WINMM.mciSendStringW(
-                u"set cdaudio door closed", None, 0, None)
-            CDtrayOpen = False
     
     def TurtleMove(self):
         self.SpiroBot.fd(int(self.Distancentry.get()))
