@@ -21,20 +21,17 @@ class Application(Frame):
         self.quit = Button(self, text="QUIT", fg="red", command= lambda:[root.destroy(), self.TurtleScreen.bye()])
         self.quit.grid(row=0, column=7)
 
-        self.hi_there = Button(
-            self, text="Do you want a cup holder", fg="blue", command=self.cupholder)
-        self.hi_there.grid(row=0, column=5)
+        self.addnewSpiro = Button(
+            self, text="Add new spirolateral", fg="blue")
+        self.addnewSpiro.grid(row=0, column=5)
 
         
         self.Distancentry = Entry(self, width = 10, validate = 'key', validatecommand = vcmd,)
         self.Distancentry.insert(0,'1')
         self.Distancentry.grid(row = 1, column = 5, sticky = W)        
         
-        
-        
-        
-        self.d4 = Button(self, text='Move Forward ', font=("Comic Sans MS", 11),command=self.TurtleMove)
-        self.d4.grid(row=0, column=1)
+        self.movefd = Button(self, text='Move Forward ', font=("Comic Sans MS", 11),command=self.TurtleMove)
+        self.movefd.grid(row=0, column=1)
 
 
         self.output = Label(root, text="")
@@ -46,7 +43,6 @@ class Application(Frame):
 
     def validate_float(self, action, index, value_if_allowed,
     prior_value, text, validation_type, trigger_type, widget_name):
-        # action=1 -> insert
         if(action=='1'):
             if text in '0123456789.-+':
                 try:
