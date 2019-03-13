@@ -1,7 +1,6 @@
 from tkinter import *
 import turtle
 from random import randint
-CDtrayOpen = False
 
 
 class Application(Frame):
