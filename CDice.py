@@ -8,7 +8,7 @@ class Application(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.homeframe = Frame(master, width=350, height=320)
-        self.grid_propagate(0)
+        self.homeframe.grid_propagate(0)
         self.homeframe.grid()
         
         self.inputframe = Frame(master,width=350, height=320)
@@ -43,8 +43,9 @@ class Application(Frame):
 
         self.goHome = Button(self.inputframe,text = "Go Back(without saving)",command = self.homeGrid)
         self.goHome.grid(row = 0, column = 2)
+    
     def TurtleMove(self):
-        self.SpiroBot.fd(int(self.Distancentry.get()))
+        self.SpiroBot.fd(round(float(self.Distancentry.get())))
 
     def validate_float(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
@@ -64,9 +65,12 @@ class Application(Frame):
         
         """ Switches from collecting frame to displaying frame.  """
         self.homeframe.grid_forget()
+        self.inputframe.grid_propagate(0)
         self.inputframe.grid(row = 0, column = 0)
+    
     def homeGrid(self):
         self.inputframe.grid_forget()
+        self.homeframe.grid_propagate(0)
         self.homeframe.grid(row = 0, column = 0)
     
 
