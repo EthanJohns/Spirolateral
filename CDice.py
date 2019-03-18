@@ -1,7 +1,5 @@
 from tkinter import *
 import turtle
-from random import randint
-
 
 class Spirolateral:
     def __init__(self, name, segment, angle):
@@ -16,11 +14,11 @@ class Application(Frame):
         super().__init__(master)
 
         # Constants for formatting
-        self.BG_COL = "orchid"
+        self.BG_COL = "#4286f4"
         self.PX = 20
         self.PY = 10
 
-        self.homeframe = Frame(master, width=400, height=320)
+        self.homeframe = Frame(master, width=400, height=640)
         self.homeframe.grid_propagate(0)
         self.homeframe.grid()
 
@@ -29,7 +27,7 @@ class Application(Frame):
         self.displaying_header.grid_propagate(0)
         self.displaying_header.grid(row=0, columnspan=2)
 
-        self.inputframe = Frame(master, width=400, height=320)
+        self.inputframe = Frame(master, width=400, height=640)
         self.inputframe.grid_propagate(0)
         self.collecting_header = Frame(self.inputframe,  bg=self.BG_COL,
                                        width=400, height=60)
@@ -37,11 +35,11 @@ class Application(Frame):
         self.collecting_header.grid(row=0, columnspan=2)
 
         collecting_label = Label(self.collecting_header, bg=self.BG_COL,
-                                 text="Collecting Person Data")
+                                 text="Collecting Spiro Data")
         collecting_label.grid(row=0, column=0,  padx=self.PX, pady=self.PY)
 
-        self.TurtleScreen = turtle.Screen()
-        self.SpiroBot = turtle.Turtle()
+       
+        
         self.vcmd = (master.register(self.validate_float),
                      '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
@@ -49,32 +47,29 @@ class Application(Frame):
 
         self.create_home_widgets()
         self.create_input_widgets()
+        self.canvas = Canvas(self.homeframe, width = 400, height = 320)
+        self.canvas.grid(row = 6, column = 0)
+        self.SpiroBot = turtle.RawTurtle(self.canvas)
 
     def create_home_widgets(self):
-        self.quit = Button(self.displaying_header, text="QUIT", fg="red", command=lambda: [
-                           root.destroy(), self.TurtleScreen.bye()])
+        self.quit = Button(self.displaying_header, text="QUIT", fg="red", command=root.destroy)
         self.quit.grid(row=0, column=2)
-        '''
-        self.Distancentry = Entry(
-            self.homeframe, width=10, validate='key', validatecommand=self.vcmd,)
-        self.Distancentry.insert(0, '1')
-        self.Distancentry.grid(row=10, column=2)
-        '''
+
         self.movefd = Button(self.homeframe, text='Move Forward ', font=(
             "Comic Sans MS", 11), command=self.TurtleMove)
         self.movefd.grid(row=10, column=1)
 
         displaying_label = Label(
-            self.displaying_header, bg=self.BG_COL, anchor=NW, text="Displaying Person Data")
+            self.displaying_header, bg=self.BG_COL, anchor=NW, text="Displaying Spiro Data")
         displaying_label.grid(row=0, column=0, sticky=NW,  padx=20, pady=10)
 
         self.go_to_collect_btn = Button(
-            self.displaying_header, width=15, anchor=NW, text="Add New Person", command=self.inputGrid)
+            self.displaying_header, width=15, anchor=NW, text="Add New Spiro", command=self.inputGrid)
         self.go_to_collect_btn.grid(row=0, column=1, sticky=NW,  padx=self.PX,
                                     pady=self.PY)
 
         fname_label_d = Label(self.homeframe, anchor=NW,
-                              text="First name:")
+                              text="Spiro name:")
         fname_label_d.grid(row=1, column=0, sticky=NW, padx=self.PX,
                            pady=self.PY/2)
 
@@ -88,25 +83,25 @@ class Application(Frame):
         self.age = Label(self.homeframe, anchor=NW)
         self.age.grid(row=2, column=1, sticky=NW, pady=5)
 
-        angel_label = Label(self.homeframe,anchor=NW, text="Angel:")
-        angel_label.grid(row=3,column=1,sticky=NW,padx =self.PX,pady=self.PY/2)
+        angel_label_d = Label(self.homeframe,anchor=NW, text="Angel:")
+        angel_label_d.grid(row=3,column=0,sticky=NW,padx =self.PX,pady=self.PY/2)
 
         self.angel = Label(self.homeframe, anchor=NW)
-        self.angel.grid(row=1,column=2,sticky=NW, pady=5)
+        self.angel.grid(row=3,column=1,sticky=NW, pady=5)
 
         self.mobile_info = Label(self.homeframe)
-        self.mobile_info.grid(row=3, columnspan=2, sticky=W+E)
+        self.mobile_info.grid(row=4, columnspan=2, sticky=W+E)
 
         self.prev_btn = Button(self.homeframe, text="Previous",
                                state=DISABLED, command=self.previous)
-        self.prev_btn.grid(row=4, column=0, sticky=W,
+        self.prev_btn.grid(row=5, column=0, sticky=W,
                            padx=self.PX/2, pady=self.PY)
 
         self.next_btn = Button(self.homeframe, text="Next",
                                state=DISABLED, command=self.next_person)
-        self.next_btn.grid(row=4, column=1, sticky=E, padx=self.PX/2,
+        self.next_btn.grid(row=5, column=1, sticky=E, padx=self.PX/2,
                            pady=self.PY)
-
+        self.index = 0
     def create_input_widgets(self):
         self.quit = Button(self.collecting_header, text="QUIT", fg="red", command=lambda: [
                            root.destroy(), self.TurtleScreen.bye()])
@@ -145,7 +140,7 @@ class Application(Frame):
         self.create_person_btn.grid(row=5, columnspan=2, pady=15)
 
     def TurtleMove(self):
-        self.SpiroBot.fd(int(self.Distancentry.get()))
+        self.spirolateralist[self.index].segment
 
     def validate_float(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
@@ -168,17 +163,17 @@ class Application(Frame):
         self.homeframe.grid_forget()
         self.inputframe.grid_propagate(0)
         self.inputframe.grid(row=0, column=0)
-        if len(self.spirolateralist) > 0:
-            self.index = 0
-            self.show_data()
-        else:
-           self.mobile_info.configure(text = "There is not currently any data to show")
-        
 
     def homeGrid(self):
         self.inputframe.grid_forget()
         self.homeframe.grid_propagate(0)
         self.homeframe.grid(row=0, column=0)
+
+        if len(self.spirolateralist) > 0:
+            self.index = 0
+            self.show_data()
+        else:
+           self.mobile_info.configure(text = "There is not currently any data to show")
 
     def make_spiro(self):
         self.spirolateralist.append(Spirolateral(self.spiro_name_entry.get(),
@@ -198,7 +193,8 @@ class Application(Frame):
             button if at the end of the list. Ensures prev button is normal.
         """
         self.index += 1
-        if self.index == len(self.people)-1:
+        
+        if self.index == len(self.spirolateralist)-1:
             self.next_btn.configure(state=DISABLED)
 
         self.prev_btn.configure(state=NORMAL)
