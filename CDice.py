@@ -21,9 +21,9 @@ class Application(Frame):
         self.quit = Button(self, text="QUIT", fg="red", command= lambda:[root.destroy(), self.TurtleScreen.bye()])
         self.quit.grid(row=0, column=7)
 
-        self.hi_there = Button(
-            self, text="Do you want a cup holder", fg="blue", command=self.cupholder)
-        self.hi_there.grid(row=0, column=5)
+        #self.hi_there = Button(
+           #self, text="Do you want a cup holder", fg="blue", command=self.cupholder)
+        #self.hi_there.grid(row=0, column=5)
 
         
         self.Distancentry = Entry(self, width = 10, validate = 'key', validatecommand = vcmd,)
@@ -39,8 +39,6 @@ class Application(Frame):
 
         self.output = Label(root, text="")
         self.output.grid()
-
-    
     def TurtleMove(self):
         self.SpiroBot.fd(int(self.Distancentry.get()))
 
