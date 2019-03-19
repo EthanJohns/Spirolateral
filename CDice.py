@@ -47,10 +47,11 @@ class Application(Frame):
 
         self.create_home_widgets()
         self.create_input_widgets()
-        self.canvas = Canvas(self.homeframe, width = 400, height = 320)
-        self.canvas.grid(row = 6, column = 0)
+        '''
+        self.canvas = Canvas(self.homeframe, width = 400, height = 400)
+        self.canvas.grid(row = 8, column = 0)
         self.SpiroBot = turtle.RawTurtle(self.canvas)
-
+        '''
     def create_home_widgets(self):
         self.quit = Button(self.displaying_header, text="QUIT", fg="red", command=root.destroy)
         self.quit.grid(row=0, column=2)
@@ -99,8 +100,7 @@ class Application(Frame):
 
         self.next_btn = Button(self.homeframe, text="Next",
                                state=DISABLED, command=self.next_person)
-        self.next_btn.grid(row=5, column=1, sticky=E, padx=self.PX/2,
-                           pady=self.PY)
+        self.next_btn.grid(row=5, column=1, sticky=E, padx=self.PX/2,pady=self.PY)
         self.index = 0
     def create_input_widgets(self):
         self.quit = Button(self.collecting_header, text="QUIT", fg="red", command=lambda: [
