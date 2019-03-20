@@ -19,7 +19,7 @@ class Application(Frame):
         self.PX = 20
         self.PY = 10
 
-        self.homeframe = Frame(master, width=400, height=640)
+        self.homeframe = Frame(master, width=400, height=320)
         self.homeframe.grid_propagate(0)
         self.homeframe.grid()
 
@@ -28,7 +28,7 @@ class Application(Frame):
         self.displaying_header.grid_propagate(0)
         self.displaying_header.grid(row=0, columnspan=2)
 
-        self.inputframe = Frame(master, width=400, height=640)
+        self.inputframe = Frame(master, width=400, height=320)
         self.inputframe.grid_propagate(0)
         self.collecting_header = Frame(self.inputframe,  bg=self.BG_COL,
                                        width=400, height=60)
@@ -56,11 +56,11 @@ class Application(Frame):
     def create_home_widgets(self):
         self.quit = Button(self.displaying_header, text="QUIT", fg="red", command=root.destroy)
         self.quit.grid(row=0, column=2)
-
+        '''
         self.movefd = Button(self.homeframe, text='Move Forward ', font=(
             "Comic Sans MS", 11), command=self.TurtleMove)
         self.movefd.grid(row=10, column=1)
-
+        '''
         displaying_label = Label(
             self.displaying_header, bg=self.BG_COL, anchor=NW, text="Displaying Spiro Data")
         displaying_label.grid(row=0, column=0, sticky=NW,  padx=20, pady=10)
@@ -104,8 +104,7 @@ class Application(Frame):
         self.next_btn.grid(row=5, column=1, sticky=E, padx=self.PX/2,pady=self.PY)
         self.index = 0
     def create_input_widgets(self):
-        self.quit = Button(self.collecting_header, text="QUIT", fg="red", command=lambda: [
-                           root.destroy(), self.TurtleScreen.bye()])
+        self.quit = Button(self.collecting_header, text="QUIT", fg="red", command=lambda: root.destroy())
         self.quit.grid(row=0, column=2)
 
         self.go_to_display_btn = Button(
@@ -118,21 +117,21 @@ class Application(Frame):
         fname_label.grid(row=1, column=0, sticky=NW,
                          padx=self.PX, pady=self.PY)
 
-        self.spiro_name_entry = Entry(self.inputframe)
-        self.spiro_name_entry .grid(row=1, column=1, sticky=NW, pady=self.PY/2)
+        self.spiro_name_entry = Entry(self.inputframe,validate = 'key', validatecommand = self.vcmd)
+        self.spiro_name_entry.grid(row=1, column=1, sticky=NW, pady=self.PY/2)
 
         segment_label = Label(self.inputframe, anchor=NW, text="Segment:")
         segment_label.grid(row=2, column=0, sticky=NW,
                            padx=self.PX, pady=self.PY/2)
 
-        self.age_entry = Entry(self.inputframe)
+        self.age_entry = Entry(self.inputframe,validate = 'key', validatecommand =self.vcmd)
         self.age_entry .grid(row=2, column=1, sticky=NW)
 
         angel_label = Label(self.inputframe, anchor=NW, text="Angle:")
         angel_label.grid(row=3, column=0, sticky=NW,
                          padx=self.PX, pady=self.PY/2)
 
-        self.angel_entry = Entry(self.inputframe)
+        self.angel_entry = Entry(self.inputframe,validate = 'key', validatecommand =self.vcmd)
         self.angel_entry .grid(row=3, column=1, sticky=NW)
 
         self.create_person_btn = Button(self.inputframe, width=10,
