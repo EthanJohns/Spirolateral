@@ -14,6 +14,7 @@ class Application(Frame):
 
     def __init__(self, master):
         super().__init__(master)
+<<<<<<< HEAD
 
         # Constants for formatting
         self.BG_COL = "#4286f4"
@@ -146,6 +147,39 @@ class Application(Frame):
         self.errorLabel = Label(self.__inputframe, text="")
         self.errorLabel.grid(row=6,columnspan = 2)
 
+=======
+        self.grid()
+        
+        self.TurtleScreen = turtle.Screen()
+        vcmd = (master.register(self.validate_float),
+                '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        self.create_widgets(vcmd)
+
+    def create_widgets(self,vcmd):
+        self.SpiroBot = turtle.Turtle()
+        
+        self.quit = Button(self, text="QUIT", fg="red", command= lambda:[root.destroy(), self.TurtleScreen.bye()])
+        self.quit.grid(row=0, column=7)
+
+        #self.hi_there = Button(
+           #self, text="Do you want a cup holder", fg="blue", command=self.cupholder)
+        #self.hi_there.grid(row=0, column=5)
+
+        
+        self.Distancentry = Entry(self, width = 10, validate = 'key', validatecommand = vcmd,)
+        self.Distancentry.insert(0,'1')
+        self.Distancentry.grid(row = 1, column = 5, sticky = W)        
+        
+        
+        
+        
+        self.d4 = Button(self, text='Move Forward ', font=("Comic Sans MS", 11),command=self.TurtleMove)
+        self.d4.grid(row=0, column=1)
+
+
+        self.output = Label(root, text="")
+        self.output.grid()
+>>>>>>> 3bf82b03c518c08ab302475209150f5bccd3d2cc
     def TurtleMove(self):
         self.spirolateralist[self.__index].segment
 
