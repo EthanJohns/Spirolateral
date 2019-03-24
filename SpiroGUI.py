@@ -10,7 +10,7 @@ class Spirolateral:
     '''
     def __init__(self, name: str, segment: int, angle):
         self.name = name
-        self.segment = segment
+        self.timestable = segment
         self.angle = angle
 
 
@@ -59,11 +59,11 @@ class Application(Frame):
 
         self.create_home_widgets()
         self.create_input_widgets()
-        '''
-        self.canvas = Canvas(self.__homeframe, width = 400, height = 400)
-        self.canvas.grid(row = 8, column = 0)
-        self.SpiroBot = turtle.RawTurtle(self.canvas)
-        '''
+        
+        #setup turtle elements
+        self.spiroTurt = turtle.Turtle()
+        self.spiroTurt.speed(-1)
+        self.wn = turtle.Screen()
 
     def create_home_widgets(self):
         '''
@@ -113,6 +113,8 @@ class Application(Frame):
         self.next_btn.grid(row=5, column=1, sticky=E,
                            padx=self.PX/2, pady=self.PY)
         self.__index = 0 # to maintain our position in the list.
+
+        self.turtleDrawButt = Button(self.__homeframe,text="Draw this Spiro.", command = self.turtleSpiroDraw)
 
     def create_input_widgets(self):
         '''
@@ -240,6 +242,35 @@ class Application(Frame):
         self.age.configure(text=self.spirolateralist[self.__index].segment)
         self.angel.configure(text="{}°".format(
             self.spirolateralist[self.__index].angle))
+    
+    def turtleSpiroDraw(self):
+        angle = self.spirolateralist[self.__index].angle
+        segments = self.spirolateralist[self.__index].segment
+        complete = False
+        self.spiroTurt.reset()
+        self.spiroTurt.tracer(0,0)
+        startPosx, startPosy = spiroTurt.pos()
+        startPos = (startPosx, startPosy)
+
+        cycles = 0
+
+        while not complete:
+            for distance in range(1, segments + 1):
+                print(distance)
+                turtle1.right(180 - angle)
+                turtle1.forward(distance * 5)
+
+            cycles += 1
+
+
+            currentPosx, currentPosy = turtle1.pos()
+            currentPos = (round(currentPosx, 3), round(currentPosy, 3))
+            print("Current cycle", cycles)
+
+            if currentPos == startPos:
+                print("We're done here")
+                complete = True
+        wn.exitonclick()
 
 if __name__ == "__main__": #Executs when the file itself is run, not when imported.
     root = Tk()
