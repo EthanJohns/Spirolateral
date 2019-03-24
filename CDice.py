@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
+#ensures we run in py3
 from tkinter import *
 import turtle
 
 
 class Spirolateral:
+    '''
+    Spirolateral Class that stores the necessary data for a spirolateral
+    '''
     def __init__(self, name: str, segment: int, angle):
         self.name = name
         self.segment = segment
@@ -11,28 +15,35 @@ class Spirolateral:
 
 
 class Application(Frame):
-
+    '''
+    GUI Application
+    '''
     def __init__(self, master):
-        super().__init__(master)
+        super().__init__(master) #to ensure parent is called correctly.
 
         # Constants for formatting
         self.BG_COL = "#4286f4"
         self.PX = 20
         self.PY = 10
+        self.WDTH = 400
+        self.HGHT = 320
 
-        self.__homeframe = Frame(master, width=400, height=320)
-        self.__homeframe.grid_propagate(0)
+        #Setting up the initial frame for the home window.
+        self.__homeframe = Frame(master, width=self.WDTH, height=self.HGHT)
+        self.__homeframe.grid_propagate(0)#to reserve space.
         self.__homeframe.grid()
-
+        #header in the homeframe
         self.displaying_header = Frame(self.__homeframe,  bg=self.BG_COL,
-                                       width=400, height=60)
+                                       width=self.WDTH, height=60)
         self.displaying_header.grid_propagate(0)
         self.displaying_header.grid(row=0, columnspan=2)
 
-        self.__inputframe = Frame(master, width=400, height=320)
+
+        #Setting up the frame for the data input
+        self.__inputframe = Frame(master, width=self.WDTH, height=self.HGHT)
         self.__inputframe.grid_propagate(0)
         self.collecting_header = Frame(self.__inputframe,  bg=self.BG_COL,
-                                       width=400, height=60)
+                                       width=self.WDTH, height=60)
         self.collecting_header.grid_propagate(0)  # preserves the space we want
         self.collecting_header.grid(row=0, columnspan=2)
 
@@ -40,9 +51,10 @@ class Application(Frame):
                                  text="Collecting Spiro Data")
         collecting_label.grid(row=0, column=0,  padx=self.PX, pady=self.PY)
 
-        self.vcmd = (master.register(self.validate_float),
+        #data validation for our Entry boxes.
+        self.vcmd = (master.register(self.validate_int),
                      '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-
+        #the list that will store our spiros
         self.spirolateralist = []
 
         self.create_home_widgets()
@@ -54,7 +66,9 @@ class Application(Frame):
         '''
 
     def create_home_widgets(self):
-        
+        '''
+        Method for creating widgets on the home frame.
+        '''
         displaying_label = Label(
             self.displaying_header, bg=self.BG_COL, text="Displaying Spiro Data")
         displaying_label.grid(row=0, column=0, padx=self.PX, pady=self.PY)
@@ -87,7 +101,7 @@ class Application(Frame):
         self.angel.grid(row=3, column=1, sticky=NW, pady=self.PY)
 
         self.mobile_info = Label(self.__homeframe)
-        self.mobile_info.grid(row=4, columnspan=2, sticky=W+E)
+        self.mobile_info.grid(row=4, columnspan=2, sticky=W+E) #
 
         self.prev_btn = Button(self.__homeframe, text="Previous",
                                state=DISABLED, command=self.previous)
@@ -98,13 +112,11 @@ class Application(Frame):
                                state=DISABLED, command=self.next_person)
         self.next_btn.grid(row=5, column=1, sticky=E,
                            padx=self.PX/2, pady=self.PY)
-        self.__index = 0
+        self.__index = 0 # to maintain our position in the list.
 
     def create_input_widgets(self):
         '''
-        self.quit = Button(self.collecting_header, text="QUIT",
-                           fg="red", command=lambda: root.destroy())
-        self.quit.grid(row=0, column=2)
+        Method for creating widgets on the input frame
         '''
         self.go_to_display_btn = Button(
             self.collecting_header, width=10,  text="Show All", command=self.homeGrid)
@@ -125,7 +137,7 @@ class Application(Frame):
 
         self.age_entry = Entry(
             self.__inputframe, validate='key', validatecommand=self.vcmd)
-        self.age_entry .grid(row=2, column=1, sticky=NW)
+        self.age_entry.grid(row=2, column=1, sticky=NW)
 
         angel_label = Label(self.__inputframe, anchor=NW, text="Angle:")
         angel_label.grid(row=3, column=0, sticky=NW,
@@ -142,11 +154,11 @@ class Application(Frame):
         self.errorLabel = Label(self.__inputframe, text="")
         self.errorLabel.grid(row=6,columnspan = 2)
 
-    def TurtleMove(self):
-        self.spirolateralist[self.__index].segment
-
-    def validate_float(self, action, index, value_if_allowed,
+    def validate_int(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
+        '''
+        Integer validation for entry boxes.
+        '''
         if(action == '1'):
             if text in '0123456789-+':
                 try:
@@ -178,16 +190,15 @@ class Application(Frame):
                 text="There is not currently any data to show")
 
     def make_spiro(self):
-        if self.spiro_name_entry.get() or self.age_entry.get() or self.angel_entry.get() == "":
+        if self.spiro_name_entry.get() == "" or self.age_entry.get() == "" or self.angel_entry.get() == "":
             self.errorLabel.configure(text="There is no data entered.")
-            print(1)
         else:
+            self.errorLabel.configure(text="")
             spiroClass = Spirolateral(self.spiro_name_entry.get(), self.age_entry.get(), self.angel_entry.get())
             self.spirolateralist.append(spiroClass)
-
+            self.clear()
         if len(self.spirolateralist) > 1:
             self.next_btn.configure(state=NORMAL)
-        self.clear()
 
     def clear(self):
         """ Clears entries and selections in collecting frame. """
@@ -196,8 +207,9 @@ class Application(Frame):
         self.angel_entry.delete(0, END)
 
     def next_person(self):
-        """ Increments self.__index and calls show_data method. Disables next
-            button if at the end of the list. Ensures prev button is normal.
+        """ 
+        Increments self.__index and calls show_data method. Disables next
+        button if at the end of the list. Ensures prev button is normal.
         """
         self.__index += 1
 
@@ -208,8 +220,9 @@ class Application(Frame):
         self.show_data()
 
     def previous(self):
-        """ Decrements self.__index and calls show_data method. Disables prev
-            button if at the start of the list. Ensures next button is normal.
+        """ 
+        Decrements self.__index and calls show_data method. Disables prev
+        button if at the start of the list. Ensures next button is normal.
         """
         self.__index -= 1
         if self.__index == 0:
@@ -219,15 +232,16 @@ class Application(Frame):
         self.show_data()
 
     def show_data(self):
-        """ Configures the displaying frame to show data associated with person
-            object stored at self.__index
+        """ 
+        Configures the displaying frame to show data associated with person
+        object stored at self.__index
         """
         self.first_name.configure(text=self.spirolateralist[self.__index].name)
         self.age.configure(text=self.spirolateralist[self.__index].segment)
         self.angel.configure(text="{}°".format(
             self.spirolateralist[self.__index].angle))
 
-if __name__ == "__main__":
+if __name__ == "__main__": #Executs when the file itself is run, not when imported.
     root = Tk()
     app = Application(root)
     app.mainloop()
