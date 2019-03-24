@@ -54,14 +54,10 @@ class Application(Frame):
         '''
 
     def create_home_widgets(self):
-        '''
-        self.quit = Button(self.displaying_header, text="QUIT",
-                           fg="red", command=root.destroy)
-        self.quit.grid(row=0, column=2)
-        '''
+        
         displaying_label = Label(
-            self.displaying_header, bg=self.BG_COL, anchor=NW, text="Displaying Spiro Data")
-        displaying_label.grid(row=0, column=0, sticky=NW,  padx=20, pady=10)
+            self.displaying_header, bg=self.BG_COL, text="Displaying Spiro Data")
+        displaying_label.grid(row=0, column=0, padx=self.PX, pady=self.PY)
 
         self.go_to_collect_btn = Button(
             self.displaying_header, width = 10, text="Add Spiro", command=self.inputGrid)
@@ -69,7 +65,7 @@ class Application(Frame):
                                     pady=self.PY)
 
         fname_label_d = Label(self.__homeframe, anchor=NW,
-                              text="Spiro name:")
+                              text="Spiro Name:")
         fname_label_d.grid(row=1, column=0, sticky=NW, padx=self.PX,
                            pady=self.PY)
 
@@ -83,7 +79,7 @@ class Application(Frame):
         self.age = Label(self.__homeframe, anchor=NW)
         self.age.grid(row=2, column=1, sticky=NW, pady=self.PY)
 
-        angel_label_d = Label(self.__homeframe, anchor=NW, text="Angel:")
+        angel_label_d = Label(self.__homeframe, anchor=NW, text="Angle:")
         angel_label_d.grid(row=3, column=0, sticky=NW,
                            padx=self.PX, pady=self.PY)
 
@@ -231,7 +227,7 @@ class Application(Frame):
         self.angel.configure(text="{}°".format(
             self.spirolateralist[self.__index].angle))
 
-
-root = Tk()
-app = Application(root)
-app.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    app = Application(root)
+    app.mainloop()
