@@ -10,7 +10,7 @@ class Spirolateral:
     '''
     def __init__(self, name: str, segment: int, angle):
         self.name = name
-        self.timestable = segment
+        self.segment = segment
         self.angle = angle
 
 
@@ -31,19 +31,26 @@ class Application(Frame):
         #Setting up the initial frame for the home window.
         self.__homeframe = Frame(master, width=self.WDTH, height=self.HGHT)
         self.__homeframe.grid_propagate(0)#to reserve space.
-        self.__homeframe.grid()
+        self.__homeframe.grid(row = 0, columnspan = 2)
         #header in the homeframe
         self.displaying_header = Frame(self.__homeframe,  bg=self.BG_COL,
-                                       width=self.WDTH, height=60)
+                                       width=self.WDTH/2, height=60)
         self.displaying_header.grid_propagate(0)
         self.displaying_header.grid(row=0, columnspan=2)
 
+        #Setting up the frame for the canvas
+        self.__canvasframe = Frame(master, width=self.WDTH, height=self.HGHT)
+        self.__canvasframe.grid_propagate(0)#to reserve space.
+        self.__canvasframe.grid(row = 1,column = 1)
+
+        self.canvas = Canvas(self.__canvasframe, height = self.HGHT, width = self.WDTH)
+        self.canvas.grid(row = 0, column = 3)
 
         #Setting up the frame for the data input
-        self.__inputframe = Frame(master, width=self.WDTH, height=self.HGHT)
+        self.__inputframe = Frame(master, width=self.WDTH/2, height=self.HGHT)
         self.__inputframe.grid_propagate(0)
         self.collecting_header = Frame(self.__inputframe,  bg=self.BG_COL,
-                                       width=self.WDTH, height=60)
+                                       width=self.WDTH/2, height=60)
         self.collecting_header.grid_propagate(0)  # preserves the space we want
         self.collecting_header.grid(row=0, columnspan=2)
 
@@ -61,9 +68,9 @@ class Application(Frame):
         self.create_input_widgets()
         
         #setup turtle elements
-        self.spiroTurt = turtle.Turtle()
+        self.spiroTurt = turtle.RawTurtle(self.canvas)
         self.spiroTurt.speed(-1)
-        self.wn = turtle.Screen()
+        
 
     def create_home_widgets(self):
         '''
@@ -101,20 +108,21 @@ class Application(Frame):
         self.angel.grid(row=3, column=1, sticky=NW, pady=self.PY)
 
         self.mobile_info = Label(self.__homeframe)
-        self.mobile_info.grid(row=4, columnspan=2, sticky=W+E) #
+        self.mobile_info.grid(row=4, columnspan=2) #
 
         self.prev_btn = Button(self.__homeframe, text="Previous",
                                state=DISABLED, command=self.previous)
-        self.prev_btn.grid(row=5, column=0, sticky=W,
+        self.prev_btn.grid(row=5, column=0,
                            padx=self.PX/2, pady=self.PY)
 
         self.next_btn = Button(self.__homeframe, text="Next",
                                state=DISABLED, command=self.next_person)
-        self.next_btn.grid(row=5, column=1, sticky=E,
+        self.next_btn.grid(row=5, column=1,
                            padx=self.PX/2, pady=self.PY)
         self.__index = 0 # to maintain our position in the list.
 
         self.turtleDrawButt = Button(self.__homeframe,text="Draw this Spiro.", command = self.turtleSpiroDraw)
+        self.turtleDrawButt.grid(row = 5, columnspan = 2)
 
     def create_input_widgets(self):
         '''
@@ -244,33 +252,33 @@ class Application(Frame):
             self.spirolateralist[self.__index].angle))
     
     def turtleSpiroDraw(self):
-        angle = self.spirolateralist[self.__index].angle
-        segments = self.spirolateralist[self.__index].segment
+        angle = int(self.spirolateralist[self.__index].angle)
+        segments = int(self.spirolateralist[self.__index].segment)
         complete = False
         self.spiroTurt.reset()
-        self.spiroTurt.tracer(0,0)
-        startPosx, startPosy = spiroTurt.pos()
-        startPos = (startPosx, startPosy)
 
+        startPosx, startPosy = self.spiroTurt.pos()
+        startPos = (startPosx, startPosy)
+        self.spiroTurt.speed(-1)
         cycles = 0
 
         while not complete:
             for distance in range(1, segments + 1):
                 print(distance)
-                turtle1.right(180 - angle)
-                turtle1.forward(distance * 5)
+                self.spiroTurt.right(180 - angle)
+                self.spiroTurt.forward(distance * 20)
 
             cycles += 1
 
 
-            currentPosx, currentPosy = turtle1.pos()
+            currentPosx, currentPosy = self.spiroTurt.pos()
             currentPos = (round(currentPosx, 3), round(currentPosy, 3))
             print("Current cycle", cycles)
 
             if currentPos == startPos:
                 print("We're done here")
                 complete = True
-        wn.exitonclick()
+        
 
 if __name__ == "__main__": #Executs when the file itself is run, not when imported.
     root = Tk()
