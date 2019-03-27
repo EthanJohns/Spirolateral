@@ -277,18 +277,18 @@ class Application(Frame):
         self.spiroTurt.speed(-1)  # for maximum speed
         cycles = 0
         SCALE = 20
-        while not complete: 
-            for distance in range(1, segments + 1):  
+        while not complete:
+            for distance in range(1, segments + 1):
                 # range increases for more segments
                 print(distance)
-                self.spiroTurt.right(180 - angle)  
+                self.spiroTurt.right(180 - angle)
                 # turns at the correct angle
-                self.spiroTurt.forward(distance * SCALE)  
+                self.spiroTurt.forward(distance * SCALE)
                 # increases the size of the spiro by a factor.
 
             cycles += 1
 
-            currentPosx, currentPosy = self.spiroTurt.pos()  
+            currentPosx, currentPosy = self.spiroTurt.pos()
             # grabs current pos
             currentPos = (round(currentPosx, 3), round(currentPosy, 3))
             print("Current cycle", cycles)
