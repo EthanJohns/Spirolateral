@@ -211,6 +211,8 @@ class Application(Frame):
         if len(self.spirolateralist) > 0:
             self.__index = 0
             self.show_data()
+            self.mobile_info.configure(
+                text="")
         else:
             self.mobile_info.configure(
                 text="There is not currently any data to show")
