@@ -13,6 +13,21 @@ class Spirolateral:
         self.name = name
         self.segment = segment
         self.angle = angle
+        self.digitalList = []
+
+    def digit_root(self, n):
+        return (n - 1) % 9 + 1
+
+    def digitCalc(self,):
+        for i in range(20):
+            test = (i+1)
+            print(test)
+            n = test * 8
+            if digit_root(n) in digitalList:
+                break
+            else:
+                digitalList.append(digit_root(n))
+        print(digitalList)
 
 
 class Application(Frame):
@@ -28,7 +43,7 @@ class Application(Frame):
         self.PX = 20
         self.PY = 10
         self.WDTH = 800
-        self.HGHT = 320
+        self.HGHT = 400
 
         # setting up a main container
         self.__maincontainer = Frame(master, width=self.WDTH, height=self.HGHT)
