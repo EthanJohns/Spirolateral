@@ -38,7 +38,7 @@ class Application(Frame):
         self.__homeframe = Frame(self.__maincontainer,
                                  width=self.WDTH/2, height=self.HGHT)
 
-        self.__homeframe.grid(row=0, column=0, sticky="W")
+        self.__homeframe.grid(row=0, column=0, sticky="nsew")
 
         # header in the homeframe
         self.displaying_header = Frame(self.__homeframe,  bg=self.BG_COL,
@@ -206,7 +206,7 @@ class Application(Frame):
     def homeGrid(self):
         self.__inputframe.grid_forget()
         self.__homeframe.grid_propagate(0)
-        self.__homeframe.grid(row=0, column=0, sticky="W")
+        self.__homeframe.grid(row=0, column=0, sticky="nesw")
 
         if len(self.spirolateralist) > 0:
             self.__index = 0
