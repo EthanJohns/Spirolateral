@@ -201,12 +201,12 @@ class Application(Frame):
         """ Switches from collecting frame to displaying frame.  """
         self.__homeframe.grid_forget()
         self.__inputframe.grid_propagate(0)
-        self.__inputframe.grid(row=0, column=0, sticky="W")
+        self.__inputframe.grid(row=0, column=0, sticky="nsew")
 
     def homeGrid(self):
         self.__inputframe.grid_forget()
         self.__homeframe.grid_propagate(0)
-        self.__homeframe.grid(row=0, column=0, sticky="nesw")
+        self.__homeframe.grid(row=0, column=0, sticky="nsew")
 
         if len(self.spirolateralist) > 0:
             self.__index = 0
