@@ -9,9 +9,9 @@ class Spirolateral:
     Spirolateral Class that stores the necessary data for a spirolateral
     '''
 
-    def __init__(self, name: str, segment: int, angle: int):
+    def __init__(self, name: str, timestable: int, angle: int):
         self.name = name
-        self.segment = segment
+        self.timestable = timestable
         self.angle = angle
         self.digitalList = []
 
@@ -21,13 +21,14 @@ class Spirolateral:
     def digitCalc(self,):
         for i in range(20):
             test = (i+1)
-            print(test)
-            n = test * 8
-            if digit_root(n) in digitalList:
+
+            n = int(test * self.timestable)
+            value = self.digit_root(n)
+            if value in self.digitalList:
                 break
             else:
-                digitalList.append(digit_root(n))
-        print(digitalList)
+                self.digitalList.append(value)
+        return(self.digitalList)
 
 
 class Application(Frame):
@@ -37,6 +38,9 @@ class Application(Frame):
 
     def __init__(self, master):
         super().__init__(master)  # to ensure parent is called correctly.
+        # Set the windows title,
+        # calls winfo_toplevel to ensure the correct root is modified.
+        self.winfo_toplevel().title("Spirolaterals")
 
         # Constants for formatting
         self.BG_COL = "#4286f4"
@@ -52,7 +56,6 @@ class Application(Frame):
         # Setting up the initial frame for the home window.
         self.__homeframe = Frame(self.__maincontainer,
                                  width=self.WDTH/2, height=self.HGHT)
-
         self.__homeframe.grid(row=0, column=0, sticky="nsew")
 
         # header in the homeframe
@@ -93,9 +96,10 @@ class Application(Frame):
 
         self.create_home_widgets()
         self.create_input_widgets()
+
         # setup turtle elements
         self.spiroTurt = turtle.RawTurtle(self.canvas)
-        self.spiroTurt.speed(-1)
+        self.spiroTurt.hideturtle()
 
     def create_home_widgets(self):
         '''
@@ -112,17 +116,18 @@ class Application(Frame):
         self.go_to_collect_btn.grid(row=0, column=1, padx=self.PX,
                                     pady=self.PY)
 
-        fname_label_d = Label(self.__homeframe, anchor=NW,
-                              text="Spiro Name:")
-        fname_label_d.grid(row=1, column=0, sticky=NW, padx=self.PX,
-                           pady=self.PY)
+        name_label_d = Label(self.__homeframe, anchor=NW,
+                             text="Spiro Name:")
+        name_label_d.grid(row=1, column=0, sticky=NW, padx=self.PX,
+                          pady=self.PY)
 
         self.first_name = Label(self.__homeframe, anchor=NW)
         self.first_name.grid(row=1, column=1, sticky=NW, pady=self.PY)
 
-        age_label_d = Label(self.__homeframe, anchor=NW, text="Segment: ")
-        age_label_d.grid(row=2, column=0, sticky=NW,
-                         padx=self.PX, pady=self.PY)
+        timestable_label_d = Label(self.__homeframe, anchor=NW,
+                                   text="Times Table: ")
+        timestable_label_d.grid(row=2, column=0, sticky=NW,
+                                padx=self.PX, pady=self.PY)
 
         self.age = Label(self.__homeframe, anchor=NW)
         self.age.grid(row=2, column=1, sticky=NW, pady=self.PY)
@@ -169,15 +174,18 @@ class Application(Frame):
                          padx=self.PX, pady=self.PY)
 
         self.spiro_name_entry = Entry(self.__inputframe)
-        self.spiro_name_entry.grid(row=1, column=1, sticky=NW, pady=self.PY)
+        self.spiro_name_entry.grid(row=1, column=1, sticky=NW,
+                                   pady=self.PY, padx=self.PX)
 
-        segment_label = Label(self.__inputframe, anchor=NW, text="Segment:")
-        segment_label.grid(row=2, column=0, sticky=NW,
-                           padx=self.PX, pady=self.PY)
+        timestable_label = Label(
+            self.__inputframe, anchor=NW, text="Times Table:")
+        timestable_label.grid(row=2, column=0, sticky=NW,
+                              padx=self.PX, pady=self.PY)
 
         self.seg_ent = Entry(
             self.__inputframe, validate='key', validatecommand=self.vcmd)
-        self.seg_ent.grid(row=2, column=1, sticky=NW)
+        self.seg_ent.grid(row=2, column=1, sticky=NW,
+                          padx=self.PX, pady=self.PY)
 
         angel_label = Label(self.__inputframe, anchor=NW, text="Angle:")
         angel_label.grid(row=3, column=0, sticky=NW,
@@ -185,7 +193,8 @@ class Application(Frame):
 
         self.ang_ent = Entry(
             self.__inputframe, validate='key', validatecommand=self.vcmd)
-        self.ang_ent .grid(row=3, column=1, sticky=NW)
+        self.ang_ent .grid(row=3, column=1, sticky=NW,
+                           padx=self.PX, pady=self.PY)
 
         self.create_person_btn = Button(self.__inputframe, width=10,
                                         text="Enter Data",
@@ -279,40 +288,46 @@ class Application(Frame):
         """ Configures the displaying frame to show data associated with person
         object stored at self.__index"""
         self.first_name.configure(text=self.spirolateralist[self.__index].name)
-        self.age.configure(text=self.spirolateralist[self.__index].segment)
+        self.age.configure(text=self.spirolateralist[self.__index].timestable)
         self.angel.configure(text="{}°".format(
             self.spirolateralist[self.__index].angle))
 
     def turtleSpiroDraw(self):
-        angle = int(self.spirolateralist[self.__index].angle)
-        segments = int(self.spirolateralist[self.__index].segment)
-        complete = False
-        self.spiroTurt.reset()  # clears any previous drawings
+        try:
+            self.mobile_info.configure(text="")
+            angle = int(self.spirolateralist[self.__index].angle)
+            timestables = int(self.spirolateralist[self.__index].timestable)
+            complete = False
+            self.spiroTurt.reset()  # clears any previous drawings
 
-        startPosx, startPosy = self.spiroTurt.pos()
-        startPos = (startPosx, startPosy)
-        self.spiroTurt.speed(-1)  # for maximum speed
-        cycles = 0
-        SCALE = 20
-        while not complete:
-            for distance in range(1, segments + 1):
-                # range increases for more segments
-                print(distance)
-                self.spiroTurt.right(180 - angle)
-                # turns at the correct angle
-                self.spiroTurt.forward(distance * SCALE)
-                # increases the size of the spiro by a factor.
+            startPosx, startPosy = self.spiroTurt.pos()
+            startPos = (startPosx, startPosy)
+            self.spiroTurt.speed(-1)  # for maximum speed
+            self.spiroTurt.hideturtle()
+            cycles = 0
+            SCALE = 20
+            while not complete:
+                for distance in self.spirolateralist[self.__index].digitCalc():
+                    # range increases for more timestables
+                    print(distance)
+                    self.spiroTurt.right(180 - angle)
+                    # turns at the correct angle
+                    self.spiroTurt.forward(distance * SCALE)
+                    # increases the size of the spiro by a factor.
 
-            cycles += 1
+                cycles += 1
 
-            currentPosx, currentPosy = self.spiroTurt.pos()
-            # grabs current pos
-            currentPos = (round(currentPosx, 3), round(currentPosy, 3))
-            print("Current cycle", cycles)
+                currentPosx, currentPosy = self.spiroTurt.pos()
+                # grabs current pos
+                currentPos = (round(currentPosx, 3), round(currentPosy, 3))
+                print("Current cycle", cycles)
 
-            if currentPos == startPos:
-                print("We're done here")
-                complete = True
+                if currentPos == startPos:
+                    print("We're done here")
+                    complete = True
+        except:
+            self.mobile_info.configure(
+                text="There is not currently any data to draw!")
 
 
 if __name__ == "__main__":
