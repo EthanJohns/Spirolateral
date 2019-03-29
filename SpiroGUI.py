@@ -233,7 +233,6 @@ class Application(Frame):
         self.__homeframe.grid(row=0, column=0, sticky="nsew")
 
         if len(self.spirolateralist) > 0:
-            self.__index = 0
             self.show_data()
             self.mobile_info.configure(
                 text="")
