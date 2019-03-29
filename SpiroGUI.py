@@ -16,7 +16,7 @@ class Spirolateral:
         self.digitalList = []
 
     def digit_root(self, n):
-        return (n - 1) % 9 + 1
+        return (n - 1) % 9 + 1 if n else 0
 
     def digitCalc(self,):
         for i in range(20):
