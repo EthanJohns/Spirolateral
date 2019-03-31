@@ -10,15 +10,19 @@ class Spirolateral:
     '''
 
     def __init__(self, name: str, timestable: int, angle: int):
+        '''Constructor method'''
         self.name = name
         self.timestable = timestable
         self.angle = angle
         self.digitalList = []
 
     def digit_root(self, n):
+        '''Calculates a digital root(modulo9)'''
         return (n - 1) % 9 + 1 if n else 0
 
-    def digitCalc(self,):
+    def digitCalc(self):
+        '''Calculates a 'times table list' that is used
+        as a range for the turtle to draw'''
         for i in range(20):
             test = (i+1)
 
@@ -309,8 +313,8 @@ class Application(Frame):
                 for distance in self.spirolateralist[self.__index].digitCalc():
                     # range increases for more timestables
                     print(distance)
-                    self.spiroTurt.right(180 - angle)
-                    # turns at the correct angle
+                    self.spiroTurt.left(180 - angle)
+                    # turns correctly to give the desired shape
                     self.spiroTurt.forward(distance * SCALE)
                     # increases the size of the spiro by a factor.
 
