@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # ensures we run in py3
+
 '''
    Copyright 2019 Ethan T Johns
 
