@@ -317,7 +317,6 @@ class Application(Frame):
         try:
             self.mobile_info.configure(text="")
             angle = int(self.spirolateralist[self.__index].angle)
-            timestables = int(self.spirolateralist[self.__index].timestable)
             complete = False
             self.spiroTurt.reset()  # clears any previous drawings
 
